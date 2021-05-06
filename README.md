@@ -1,2 +1,2 @@
 # Springboot Applications
-Variours implementation in Springboot
+Various implementation in Springboot
