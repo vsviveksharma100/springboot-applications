@@ -2,7 +2,7 @@
 Generic implementation for consuming RESTful services (JSON and XML).
 
 ## How It Works
-1. Extend *AbtractJsonClient* for consuming JSON service and *AbstractXmlClient* for XML service.
+1. Extend *AbstractJsonClientService* for consuming JSON service and *AbstractXmlClientService* for XML service.
 #### JSON
 JSON Client Implementation by extending *AbstractJsonClient* and annotating it with *@Service* and *@ConfigurationProperties*
 ``` java
