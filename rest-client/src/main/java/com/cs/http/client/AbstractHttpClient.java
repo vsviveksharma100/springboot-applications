@@ -3,6 +3,8 @@
  */
 package com.cs.http.client;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
@@ -33,6 +35,7 @@ public abstract class AbstractHttpClient {
 	public AbstractHttpClient() {
 	}
 
+	@PostConstruct
 	protected void onInit() {
 		configure();
 
@@ -80,6 +83,8 @@ public abstract class AbstractHttpClient {
 		HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
 		factory.setConnectionRequestTimeout(httpConfig.getConnectionTimeout());
 		factory.setReadTimeout(httpConfig.getReadTimeout());
+
+		logger.info("Initializing RestTemplate with " + httpConfig.toString());
 
 		return new RestTemplate(factory);
 	}
@@ -133,6 +138,21 @@ public abstract class AbstractHttpClient {
 	}
 
 	/**
+	 * Invoke DELETE request
+	 * 
+	 * @param <V>
+	 * @param <T>
+	 * @param url
+	 * @param headers
+	 * @param responseClass
+	 * @return
+	 */
+	protected <V, T> V invokeDeleteRequest(String url, HttpHeaders headers, Class<V> responseClass) {
+		HttpEntity<T> httpEntity = httpClient.getHttpEntity(headers);
+		return invokeRequest(url, httpEntity, HttpMethod.DELETE, responseClass);
+	}
+
+	/**
 	 * 
 	 * Invoke Rest Consumer Client
 	 * 
@@ -158,4 +178,13 @@ public abstract class AbstractHttpClient {
 	 * @return DataBinding
 	 */
 	protected abstract DataBinding getDataBinding();
+
+	public HttpConfig getConfig() {
+		return config;
+	}
+
+	public void setConfig(HttpConfig config) {
+		this.config = config;
+	}
+
 }

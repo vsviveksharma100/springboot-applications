@@ -18,11 +18,6 @@ public abstract class AbstractJsonClient extends AbstractHttpClient {
 	}
 
 	@Override
-	protected void onServiceInit() {
-
-	}
-
-	@Override
 	protected DataBinding getDataBinding() {
 		return DataBinding.JSON;
 	}

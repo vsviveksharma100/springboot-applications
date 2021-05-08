@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.cs;
+package com.cs.exception;
 
 /**
  * @author Vivek Sharma

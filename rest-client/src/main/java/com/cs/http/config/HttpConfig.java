@@ -57,4 +57,9 @@ public class HttpConfig {
 	public void setConnectionTimeout(int connectionTimeout) {
 		this.connectionTimeout = connectionTimeout;
 	}
+
+	@Override
+	public String toString() {
+		return "{ readTimeout=" + readTimeout + ", connectionTimeout=" + connectionTimeout + " }";
+	}
 }
