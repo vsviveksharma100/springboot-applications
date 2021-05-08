@@ -11,7 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
-import com.cs.http.client.AbstractJsonClient;
+import com.cs.http.client.AbstractJsonClientService;
 
 /**
  * 
@@ -24,7 +24,7 @@ import com.cs.http.client.AbstractJsonClient;
  */
 @Service
 @ConfigurationProperties(prefix = "application.json")
-public class JsonClientImplementation extends AbstractJsonClient {
+public class JsonClientImplementation extends AbstractJsonClientService {
 
 	private static Logger logger = LoggerFactory.getLogger(JsonClientImplementation.class);
 

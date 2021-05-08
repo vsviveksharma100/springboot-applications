@@ -12,9 +12,9 @@ import com.cs.http.config.DataBinding;
  * @author Vivek Sharma
  *
  */
-public abstract class AbstractJsonClient extends AbstractHttpClient {
+public abstract class AbstractJsonClientService extends AbstractHttpClient {
 
-	public AbstractJsonClient() {
+	public AbstractJsonClientService() {
 	}
 
 	@Override
