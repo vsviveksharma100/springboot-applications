@@ -10,7 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
-import com.cs.http.client.AbstractXmlClientSerice;
+import com.cs.http.client.AbstractXmlClientService;
 
 /**
  * 
@@ -22,7 +22,7 @@ import com.cs.http.client.AbstractXmlClientSerice;
  */
 @Service
 @ConfigurationProperties(prefix = "application.xml")
-public class XmlClientImplementation extends AbstractXmlClientSerice {
+public class XmlClientImplementation extends AbstractXmlClientService {
 
 	private static Logger logger = LoggerFactory.getLogger(XmlClientImplementation.class);
 

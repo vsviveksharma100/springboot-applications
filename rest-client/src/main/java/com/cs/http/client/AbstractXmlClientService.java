@@ -11,9 +11,9 @@ import com.cs.http.config.DataBinding;
  * @author Vivek Sharma
  *
  */
-public abstract class AbstractXmlClientSerice extends AbstractHttpClient {
+public abstract class AbstractXmlClientService extends AbstractHttpClient {
 
-	public AbstractXmlClientSerice() {
+	public AbstractXmlClientService() {
 	}
 
 	@Override
