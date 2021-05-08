@@ -56,7 +56,7 @@ public class JsonClientImplementation extends AbstractJsonClient {
 		String url = getEndpointUrl() + GET_USER;
 		HttpHeaders headers = createCommonHeaders();
 		String response = invokeGetRequest(url, headers, String.class);
-		logger.info(String.format("====== Invoked GET Response : %s ======", response));
+		logger.info(String.format("====== Invoked GET Response JSON : %s ======", response));
 		return response;
 	}
 
@@ -65,7 +65,7 @@ public class JsonClientImplementation extends AbstractJsonClient {
 		HttpHeaders headers = createCommonHeaders();
 		String payload = "{" + "    \"name\": \"morpheus\"," + "    \"job\": \"leader\"" + "}";
 		String response = invokePostRequest(url, payload, headers, String.class);
-		logger.info(String.format("====== Invoked POST Response : %s ======", response));
+		logger.info(String.format("====== Invoked POST Response JSON : %s ======", response));
 		return true;
 	}
 
@@ -74,7 +74,7 @@ public class JsonClientImplementation extends AbstractJsonClient {
 		HttpHeaders headers = createCommonHeaders();
 		String payload = "{" + "    \"name\": \"morpheus\"," + "    \"job\": \"zion resident\"" + "}";
 		String response = invokePutRequest(url, payload, headers, String.class);
-		logger.info(String.format("====== Invoked PUT Response : %s ======", response));
+		logger.info(String.format("====== Invoked PUT Response JSON : %s ======", response));
 		return true;
 	}
 
@@ -82,21 +82,23 @@ public class JsonClientImplementation extends AbstractJsonClient {
 		String url = getEndpointUrl() + DELETE_USER;
 		HttpHeaders headers = createCommonHeaders();
 		String response = invokeDeleteRequest(url, headers, String.class);
-		logger.info(String.format("====== Invoked DELETE Response : %s ======", response));
+		logger.info(String.format("====== Invoked DELETE Response JSON : %s ======", response));
 		return true;
 	}
 
 	public String readTimeout() {
 		// read timeout is set for 2 seconds and response will returned in 10 seconds
+
 		String url = getEndpointUrl() + READ_TIMEOUT;
 		HttpHeaders headers = createCommonHeaders();
+		logger.info(String.format("====== Invoked GET Response Read Timeout JSON ======"));
+
 		String response = null;
 		try {
 			response = invokeGetRequest(url, headers, String.class);
-			logger.info(String.format("====== Invoked GET Response Read Timeout : %s ======", response));
 		} catch (Exception e) {
 			if (e instanceof ResourceAccessException)
-				logger.info(e.getMessage());
+				logger.error(e.getMessage());
 		}
 		return response;
 	}

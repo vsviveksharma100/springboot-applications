@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cs.impl.JsonClientImplementation;
+import com.cs.impl.XmlClientImplementation;
 
 /**
+ * Rest Controller for Testing JSON and XML clients
+ * 
  * @author Vivek Sharma
  *
  */
@@ -24,14 +27,22 @@ public class ApiController {
 	@Autowired
 	private JsonClientImplementation jsonService;
 
+	@Autowired
+	private XmlClientImplementation xmlService;
+
 	public ApiController() {
-		// TODO Auto-generated constructor stub
 	}
 
 	@GetMapping("/invoke-json-apis")
-	public ResponseEntity<String> hello() {
+	public ResponseEntity<String> json() {
 		jsonService.invokeAllFunctions();
-		return new ResponseEntity<String>("Hello World!!", HttpStatus.OK);
+		return new ResponseEntity<String>("Hello World Json !! See application logs.", HttpStatus.OK);
+	}
+
+	@GetMapping("/invoke-xml-apis")
+	public ResponseEntity<String> xml() {
+		xmlService.getXmlData();
+		return new ResponseEntity<String>("Hello World Xml !! See application logs.", HttpStatus.OK);
 	}
 
 }

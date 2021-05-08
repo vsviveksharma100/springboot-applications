@@ -17,11 +17,6 @@ public abstract class AbstractXmlClient extends AbstractHttpClient {
 	}
 
 	@Override
-	protected void onServiceInit() {
-
-	}
-
-	@Override
 	protected DataBinding getDataBinding() {
 		return DataBinding.XML;
 	}
