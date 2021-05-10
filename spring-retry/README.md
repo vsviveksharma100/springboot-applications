@@ -1,2 +1,2 @@
 # Spring Retry
-Springboot application with Retry Implementation using srping-retry.
+Springboot application with Retry Implementation using spring-retry.
