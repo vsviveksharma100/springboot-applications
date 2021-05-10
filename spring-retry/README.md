@@ -1,5 +1,5 @@
-# Spring Rest Client
-Springboot application for consuming both XMl and JSON using Maven.
+# Spring Retry
+Springboot application with Retry Implementation using srping-retry.
 
 ## Resources
 Application consumes free open apis available over the internet.
