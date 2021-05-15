@@ -11,7 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
+import com.resilience.config.Resilience4jConfig;
+
 import io.github.resilience4j.core.EventConsumer;
+import io.github.resilience4j.decorators.Decorators;
 import io.github.resilience4j.retry.Retry;
 import io.github.resilience4j.retry.RetryRegistry;
 import io.github.resilience4j.retry.event.RetryOnErrorEvent;
@@ -29,6 +32,9 @@ import io.vavr.control.Try;
  * to handle when all the retry events are exhausted. Here we can generate a
  * default response or throw exception back to the consumer
  * 
+ * Implementation also shows how we can configure fallback method and recover
+ * option in-case all the retry attempts are exhausted
+ * 
  * @author Vivek Sharma
  *
  */
@@ -38,9 +44,9 @@ public class RetryService {
 	@Autowired
 	private RetryRegistry retryRegistry;
 
-	Supplier<String> retryValidException;
-	Supplier<String> retryNoValidException;
-	Retry retry;
+	private Supplier<String> retryValidException;
+	private Supplier<String> retryNoValidException;
+	private Retry retry;
 
 	public RetryService() {
 	}
@@ -94,39 +100,52 @@ public class RetryService {
 	}
 
 	/**
+	 * 
 	 * Retry Scenario where Exception occurs in business logic and retry is
-	 * attempted due to valid exception which configured in RetryRegistry
+	 * attempted due to valid exception which configured in RetryRegistry.
+	 * Implementation shows use of fallback method which will called when all the
+	 * retry attempts are exhausted
 	 * 
 	 * 
 	 * @return
 	 */
 	public String retryWithValidException() {
 
-		Supplier<String> decorateSupplier = Retry.decorateSupplier(retry, retryValidException);
-		return Try.ofSupplier(decorateSupplier).recover(throwable -> {
-			System.out.println("Recover Called from Retry with valid exception");
-			System.out.println(throwable);
-			throw new RuntimeException(throwable);
-//			return "Calling from business logic with retry recover.....";
-		}).get();
+		return Decorators.ofSupplier(retryValidException).withRetry(retry)
+				.withFallback(Resilience4jConfig.EXCEPTIONS, th -> fallbackAfterExhaustion(th)).get();
 
 	}
 
 	/**
 	 * Retry Scenario where Exception occurs in business logic and retry is not
-	 * attempted because exception is not configured in RetryRegistry
+	 * attempted because exception is not configured in RetryRegistry.
+	 * Implementation shows use of recover method which can be used with
+	 * <Try.ofSupplier>
 	 * 
 	 * 
 	 * @return
 	 */
 	public String retryWithNoValidException() {
 		Supplier<String> decorateSupplier = Retry.decorateSupplier(retry, retryNoValidException);
+
 		return Try.ofSupplier(decorateSupplier).recover(throwable -> {
 			System.out.println("Recover Called for Retry with no valid exception");
 			System.out.println(throwable);
 			throw new RuntimeException(throwable);
-//			return "Calling from business logic with retry recover.....";
 		}).get();
+
+	}
+
+	/**
+	 * 
+	 * Fallback method
+	 * 
+	 * @param throwable
+	 * @return
+	 */
+	public String fallbackAfterExhaustion(Throwable throwable) {
+		System.out.println(throwable);
+		return "Fallback Method Response after all retry attempts are exhausted";
 	}
 
 	/**

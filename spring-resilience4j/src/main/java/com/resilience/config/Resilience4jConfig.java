@@ -5,6 +5,8 @@ package com.resilience.config;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 import org.springframework.context.annotation.Bean;
@@ -21,6 +23,8 @@ import io.github.resilience4j.retry.RetryRegistry;
 @Configuration
 public class Resilience4jConfig {
 
+	public static final List<Class<? extends Throwable>> EXCEPTIONS = Arrays.asList(IOException.class,TimeoutException.class, IllegalStateException.class);
+	
 	public Resilience4jConfig() {
 	}
 	
