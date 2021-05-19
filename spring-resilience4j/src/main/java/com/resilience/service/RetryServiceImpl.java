@@ -9,7 +9,6 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.ResourceAccessException;
 
 import com.resilience.config.Resilience4jConfig;
 
@@ -39,7 +38,7 @@ import io.vavr.control.Try;
  *
  */
 @Service
-public class RetryService {
+public class RetryServiceImpl {
 
 	@Autowired
 	private RetryRegistry retryRegistry;
@@ -48,15 +47,18 @@ public class RetryService {
 	private Supplier<String> retryNoValidException;
 	private Retry retry;
 
-	public RetryService() {
+	@Autowired
+	private ServiceB serviceB;
+
+	public RetryServiceImpl() {
 	}
 
 	@PostConstruct
 	private void onInit() {
 		confirgureRetry();
 
-		retryValidException = () -> businessLogicWithRetry();
-		retryNoValidException = () -> businessLogicWithoutRetry();
+		retryValidException = () -> serviceB.businessLogicIllegalStateExp();
+		retryNoValidException = () -> serviceB.businessLogicResourceAccessExp();
 	}
 
 	/**
@@ -130,8 +132,7 @@ public class RetryService {
 
 		return Try.ofSupplier(decorateSupplier).recover(throwable -> {
 			System.out.println("Recover Called for Retry with no valid exception");
-			System.out.println(throwable);
-			throw new RuntimeException(throwable);
+			return "Recover Method Response";
 		}).get();
 
 	}
@@ -148,25 +149,4 @@ public class RetryService {
 		return "Fallback Method Response after all retry attempts are exhausted";
 	}
 
-	/**
-	 * Business Logic Generating Exception
-	 * 
-	 * @return
-	 */
-	private String businessLogicWithRetry() {
-		System.out.println("Business Logic with valid Exception. Retry will occur ......");
-		throw new IllegalStateException("Calling from business logic with retry");
-	}
-
-	/**
-	 * 
-	 * Business Logic Generating Exception
-	 * 
-	 * @return
-	 */
-	private String businessLogicWithoutRetry() {
-		System.out.println("Business Logic without valid Exception. Retry will not occur ......");
-		throw new ResourceAccessException(
-				"Calling from business logic with retry but not with valid exception. Retry Didnt occured");
-	}
 }
