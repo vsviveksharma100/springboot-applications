@@ -3,6 +3,7 @@ Springboot application with Resilience4j Implementation of:
 - Retry
 - Circuit Breaker
 - Bulkhead
+- Rate Limiter
 
 ## Acknowledgements
 Following resources where great help to understand on how to get started

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.resilience.service.BulkHeadServiceImpl;
 import com.resilience.service.CircuitBreakerServiceImpl;
+import com.resilience.service.RateLimiterServiceImpl;
 import com.resilience.service.RetryServiceImpl;
 
 /**
@@ -32,6 +33,9 @@ public class ApiController {
 
 	@Autowired
 	private BulkHeadServiceImpl bulkHeadService;
+
+	@Autowired
+	private RateLimiterServiceImpl rateLimiterService;
 
 	public ApiController() {
 	}
@@ -59,5 +63,10 @@ public class ApiController {
 	@GetMapping("/bulkhead")
 	public ResponseEntity<String> bulkhead() {
 		return new ResponseEntity<String>(bulkHeadService.businessCall(), HttpStatus.OK);
+	}
+
+	@GetMapping("/rate-limiter")
+	public ResponseEntity<String> rateLimiter() {
+		return new ResponseEntity<String>(rateLimiterService.getResponse(), HttpStatus.OK);
 	}
 }

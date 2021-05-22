@@ -17,6 +17,8 @@ import io.github.resilience4j.bulkhead.ThreadPoolBulkheadRegistry;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig.SlidingWindowType;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
+import io.github.resilience4j.ratelimiter.RateLimiterConfig;
+import io.github.resilience4j.ratelimiter.RateLimiterRegistry;
 import io.github.resilience4j.retry.RetryConfig;
 import io.github.resilience4j.retry.RetryRegistry;
 
@@ -70,5 +72,16 @@ public class Resilience4jConfig {
 				.keepAliveDuration(Duration.ofMillis(25000))
 				.build();
 		return ThreadPoolBulkheadRegistry.of(config);
+	}
+	
+	@Bean
+	public RateLimiterRegistry rateLimiterRegistry() {
+		RateLimiterConfig config  = RateLimiterConfig.custom()
+				.limitForPeriod(1)
+				.limitRefreshPeriod(Duration.ofMillis(1000))
+				.timeoutDuration(Duration.ofMillis(2000))
+				.build();
+		return RateLimiterRegistry.of(config);
+				
 	}
 }
