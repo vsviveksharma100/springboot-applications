@@ -12,6 +12,8 @@ import java.util.concurrent.TimeoutException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import io.github.resilience4j.bulkhead.ThreadPoolBulkheadConfig;
+import io.github.resilience4j.bulkhead.ThreadPoolBulkheadRegistry;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig.SlidingWindowType;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
@@ -56,5 +58,17 @@ public class Resilience4jConfig {
 				  .build();
 		return CircuitBreakerRegistry.of(circuitBreakerConfig);
 		
+	}
+	
+	@Bean
+	public ThreadPoolBulkheadRegistry threadPoolBulkheadRegistry() {
+		ThreadPoolBulkheadConfig config = ThreadPoolBulkheadConfig.custom()
+				.maxThreadPoolSize(10)
+				.coreThreadPoolSize(2)
+				.queueCapacity(5)
+				.writableStackTraceEnabled(true)
+				.keepAliveDuration(Duration.ofMillis(25000))
+				.build();
+		return ThreadPoolBulkheadRegistry.of(config);
 	}
 }

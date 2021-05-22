@@ -2,6 +2,7 @@
 Springboot application with Resilience4j Implementation of:
 - Retry
 - Circuit Breaker
+- Bulkhead
 
 ## Acknowledgements
 Following resources where great help to understand on how to get started

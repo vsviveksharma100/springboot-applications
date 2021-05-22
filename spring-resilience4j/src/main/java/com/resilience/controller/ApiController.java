@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.resilience.service.BulkHeadServiceImpl;
 import com.resilience.service.CircuitBreakerServiceImpl;
 import com.resilience.service.RetryServiceImpl;
 
@@ -28,6 +29,9 @@ public class ApiController {
 
 	@Autowired
 	private CircuitBreakerServiceImpl breakerService;
+
+	@Autowired
+	private BulkHeadServiceImpl bulkHeadService;
 
 	public ApiController() {
 	}
@@ -52,4 +56,8 @@ public class ApiController {
 		return new ResponseEntity<Boolean>(breakerService.update(enable), HttpStatus.OK);
 	}
 
+	@GetMapping("/bulkhead")
+	public ResponseEntity<String> bulkhead() {
+		return new ResponseEntity<String>(bulkHeadService.businessCall(), HttpStatus.OK);
+	}
 }

@@ -37,7 +37,6 @@ public class CircuitBreakerServiceImpl {
 	private ServiceA serviceA;
 
 	private Supplier<String> validException;
-	private Supplier<String> ignoreException;
 
 	public CircuitBreakerServiceImpl() {
 	}
@@ -46,7 +45,6 @@ public class CircuitBreakerServiceImpl {
 	private void onInit() {
 		configure();
 		validException = () -> serviceA.businessLogicIllegalStateExp();
-		ignoreException = () -> serviceA.businessLogicResourceAccessExp();
 	}
 
 	/**
